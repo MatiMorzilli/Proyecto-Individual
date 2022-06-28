@@ -18,13 +18,12 @@
           <div class="feature-icon bg-gradient">
             <img class="d-block mx-auto mb-4" src="https://upload.wikimedia.org/wikipedia/commons/8/8e/Catcher-in-the-rye-red-cover.jpg" alt="" width="172" height="257">
           </div>
-          <% authors.books.forEach(book=>{ %>
-            <% const keys = Object.keys(book); %> 
-          <h2><%=keys.dataValues%> </h2>
-          <% }) %>
-          <% //authors.books.forEach(author=>{ %>
-          <!-- <p><%= //author.name %> </p> -->
-          <%// }) %>
+           <%books.map(book=>{ %> 
+          <h2><%=`${book.title}`%> </h2>
+        <% }) %>  
+          <%for(const author in authors.dataValues.books){ %>
+           <p><%=`${author.title}` %> </p>
+          <% } %>
           <a href="#" class="icon-link">
             Detail
           </a>

@@ -1,5 +1,6 @@
-const bcryptjs = require('bcryptjs');
 const db = require('../database/models');
+const bcrypt = require('bcryptjs/dist/bcrypt');
+const { validationResult } = require('express-validator');
 const Op = db.Sequelize.Op;
 const mainController = {
   home: (req, res) => {
@@ -37,7 +38,8 @@ const mainController = {
         })
   },
   deleteBook: (req, res) => {
-    db.Book.destroy({where: {id:req.params.id},force:true})
+    const IdBook = req.params.id
+    db.Book.destroy({where: {id:IdBook}})
     .then(()=>{
       return res.redirect('/')})
     .catch(error=> res.send(error))
@@ -53,33 +55,94 @@ const mainController = {
     db.Author.findByPk(req.params.id,
       {include:'books'})
       .then(authors=>{
-        console.log(authors)
-        res.render('authorBooks',{authors})
+        const books = authors.books
+        res.render('authorBooks',{authors,books})
       })
   },
   register: (req, res) => {
     res.render('register');
   },
   processRegister: (req, res) => {
+    const validation = validationResult(req)
+    if(validation.errors.length > 0){
+      res.render('register',{
+          errors: validation.mapped(),
+          oldData: req.body
+      })
+  } 
+    db.User.findOne({where:{Email: req.body.email}})
+    .then(userInDB=>{
+    if(userInDB){
+      console.log(userInDB);
+          res.render('register',{
+              errors: {
+                  email:{
+                      msg: 'Este email ya esta registrado'
+                  }
+              },
+              oldData: req.body
+          })
+  }else{
+    const passwordHashed = bcrypt.hashSync(req.body.password,10)
     db.User.create({
       Name: req.body.name,
-      Email: req.body.email,
-      Country: req.body.country,
-      Pass: bcryptjs.hashSync(req.body.password, 10),
-      CategoryId: req.body.category
+      Email:req.body.email,
+      Country:req.body.country,
+      Pass:passwordHashed,
+      CategoryId:req.body.category
+
     })
       .then(() => {
-        res.redirect('/');
+        res.redirect('/users/login');
       })
       .catch((error) => res.send(error));
+  }})},
+  logout: (req,res)=>{
+  res.clearCookie('userEmail');
+  res.session.destroy();
+  return res.redirect('/')
   },
   login: (req, res) => {
-    // Implement login process
     res.render('login');
   },
   processLogin: (req, res) => {
-    // Implement login process
-    res.render('home');
+    const validation = validationResult(req);
+    if(validation.errors.length > 0){ 
+			res.render('login', {
+				 errors:validation.mapped(),
+				 oldData: req.body});
+
+		} 
+    db.User
+    .findOne({where: {Email: req.body.email}})
+    .then(userInDB =>{
+     if (!userInDB) { 
+         res.render('login',{
+             errors: {
+                 email:{
+                     msg:'El correo electrónico o constraseña son inválidas'
+                 }
+             }
+         })
+     } else { 
+     bcrypt.compare(req.body.password, userInDB.Pass)
+    .then((checked)=>{
+    if(checked){
+     delete userInDB.Pass;
+       req.session.logedUser = userInDB;
+       if(req.body.recordame){
+      res.cookie('userEmail', req.body.email, {maxAge: (1000*60)*60})}
+        res.redirect('/');
+         } else {
+      res.render('login', {
+      errors: {
+      email: {
+      msg: 'El correo electrónico o constraseña son inválidas'}
+      },
+      oldData: req.body})}
+         })
+         }    
+     })
   },
   edit: (req, res) => {
     db.Book.findByPk(req.params.id,{include:'authors'})
