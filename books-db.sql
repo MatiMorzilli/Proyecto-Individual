@@ -19,7 +19,10 @@ VALUES
     ('Jason N. Gaylord', 'USA'),
     ('Pranav Rastogi', 'India'),
     ('Todd Miranda', 'USA'),
-    ('Christian Wenz', 'USA')
+    ('Christian Wenz', 'USA'),
+    ('J. K. Rowling', 'UK'),
+    ('J. R. R. Tolkien','South Africa'),
+    ('Paulo Coelho','Brasil')
 ;
 
 CREATE TABLE Books (
@@ -39,7 +42,10 @@ VALUES
     (4, 'The Great Gatsby', 'https://upload.wikimedia.org/wikipedia/commons/7/7a/The_Great_Gatsby_Cover_1925_Retouched.jpg', "The Great Gatsby, third novel by F. Scott Fitzgerald, published in 1925 by Charles Scribner's Sons. Set in Jazz Age New York, the novel tells the tragic story of Jay Gatsby, a self-made millionaire, and his pursuit of Daisy Buchanan, a wealthy young woman whom he loved in his youth."),
     (5, 'Tender is the Night', 'https://upload.wikimedia.org/wikipedia/commons/2/25/Tender_Is_the_Night_%281934_1st_ed_dust_jacket%29.jpg', "Tender Is the Night, semiautobiographical novel by F. Scott Fitzgerald, published in 1934. It is the story of a psychiatrist who marries one of his patients; as she slowly recovers, she exhausts his vitality until he is, in Fitzgerald's words, un homme épuisé (“a used-up man”)"),
     (6, 'Pride and Prejudice', 'https://almabooks.com/wp-content/uploads/2016/10/9781847493699.jpg', "Pride and Prejudice follows the turbulent relationship between Elizabeth Bennet, the daughter of a country gentleman, and Fitzwilliam Darcy, a rich aristocratic landowner. They must overcome the titular sins of pride and prejudice in order to fall in love and marry."),
-    (7, 'Professional ASP.NET 4.5 in C# and VB', 'https://media.wiley.com/product_data/coverImage300/59/11183320/1118332059.jpg', "ASP.NET is Microsoft's technology for building dynamically generated web pages from database content. Originally introduced in 2002, ASP.NET has undergone many changes in multiple versions and iterations as developers have gained a decade of experience with this popular technology.")
+    (7, 'Professional ASP.NET 4.5 in C# and VB', 'https://media.wiley.com/product_data/coverImage300/59/11183320/1118332059.jpg', "ASP.NET is Microsoft's technology for building dynamically generated web pages from database content. Originally introduced in 2002, ASP.NET has undergone many changes in multiple versions and iterations as developers have gained a decade of experience with this popular technology."),
+    (8, 'Harry Potter', 'https://img.remediosdigitales.com/000602/hp_y_la_piedra_filosofal_20_by_grafik-d8aomyb/1366_2000.jpg', "El libro Harry Potter fue públicado en junio de 1997, es una heptalogía de novelas fantásticas escrita por la autora británica J. K. Rowling, en la que se describen las aventuras del joven aprendiz de mago Harry Potter y sus amigos Hermione Granger y Ron Weasley, durante los siete años que pasan en el Colegio Hogwarts de Magia y Hechicería.."),
+    (9, ' El Señor de los Anillos', 'https://elcomercio.pe/resizer/ZAFudlOIdJry28r0nmuWIkLQdKI=/580x330/smart/filters:format(jpeg):quality(75)/cloudfront-us-east-1.images.arcpublishing.com/elcomercio/J2P5MGYGVBBHPISNEAGX6KU6V4.jpg', "El Señor de los Anillos se público por primera vez en 1954 es una novela de fantasía épica escrita por el filólogo y escritor británico J. R. R. Tolkien. Su historia se desarrolla en la Tercera Edad del Sol de la Tierra Media, un lugar ficticio poblado por hombres y otras razas antropomorfas como los hobbits, los elfos o los enanos, así como por muchas otras criaturas reales y fantásticas."),
+    (10, 'El Alquimista', 'https://images.cdn2.buscalibre.com/fit-in/360x360/a2/4b/a24bec7258f27d6764fe89e0556757b7.jpg', "El alquimista publicado en 1988 es un libro escrito por el escritor brasileño Paulo Coelho que ha sido traducido a más de 63 lenguas y publicado en 150 países, y que ha vendido un total de 65 millones de copias en todo el mundo.1 El libro trata sobre los sueños y los medios que utilizamos para alcanzarlos, sobre el azar en nuestra vida y las señales que se presentan a lo largo de esta.")
 ;
 
 CREATE TABLE BooksAuthors (
@@ -47,7 +53,7 @@ CREATE TABLE BooksAuthors (
     AuthorId INT NOT NULL,
     BookId  INT NOT NULL,
     FOREIGN KEY (AuthorId) REFERENCES Authors(Id),
-    FOREIGN KEY (BookId) REFERENCES Books(Id),
+    FOREIGN KEY (BookId) REFERENCES Books(Id) ON DELETE CASCADE ON UPDATE CASCADE,
     PRIMARY KEY(Id)
 );
 
@@ -64,7 +70,12 @@ VALUES
     (7, 5),
     (7, 6),
     (7, 7),
-    (7, 8)
+    (7, 8),
+    (8,5),
+    (8,2),
+    (8,9),
+    (9,10),
+    (10,11)
 ;
 
 CREATE TABLE Categories (
