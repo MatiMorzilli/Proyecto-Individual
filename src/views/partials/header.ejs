@@ -12,7 +12,7 @@
 
     <div class="col-md-3 text-end">
         <% if(locals.isLogged){ %> 
-          <p>Hi, <%= locals.logedUser.Name %></p>
+          <p>Hi, <%= locals.loggedUser.Name %></p>
           <a href="/users/logout"  class="btn btn-outline-primary me-2">Log Out</a>
           <% }else{%> 
             <a href="/users/login" class="btn btn-outline-primary me-2">Log in</a>

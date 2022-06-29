@@ -8,18 +8,17 @@ const app = express();
 
 app.use(methodOverride('_method'))
 app.use(session({
-  secret: "Gregory House and Luko for the win",
+  secret: "SHHHH",
   resave: true,
   saveUninitialized: true
 }
 ))
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-
 app.set('view engine', 'ejs');
 app.set('views', 'src/views');
-app.use(userLoggedMiddleware);
 app.use(cookieParser());
+app.use(userLoggedMiddleware);
 app.use('/', mainRouter);
 
 app.listen(3000, () => {

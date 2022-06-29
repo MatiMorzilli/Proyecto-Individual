@@ -107,7 +107,7 @@ const mainController = {
   login: (req, res) => {
     res.render('login');
   },
-  processLogin: (req, res) => {
+  processLogin: async(req, res) => {
     const validation = validationResult(req);
     if(validation.errors.length > 0){ 
 			res.render('login', {
@@ -115,9 +115,8 @@ const mainController = {
 				 oldData: req.body});
 
 		} 
-    db.User
+     let userInDB = await db.User
     .findOne({where: {Email: req.body.email}})
-    .then(userInDB =>{
      if (!userInDB) { 
          res.render('login',{
              errors: {
@@ -127,26 +126,25 @@ const mainController = {
              }
          })
      } else { 
-     bcrypt.compare(req.body.password, userInDB.Pass)
-    .then((checked)=>{
-    if(checked){
+   let compare = await bcrypt.compare(req.body.password, userInDB.Pass)
+    if(compare){
      delete userInDB.Pass;
-     req.session.emailsession = userInDB.Email
-     console.log(req.session.emailsession)
-       req.session.logedUser = userInDB;
+       req.session.loggedUser = userInDB;
        if(req.body.recordame){
-      res.cookie('userEmail', req.body.email, {maxAge: (1000*60)*60})}
-        res.redirect('/');
-         } else {
-      res.render('login', {
-      errors: {
-      email: {
-      msg: 'El correo electrónico o constraseña son inválidas'}
-      },
-      oldData: req.body})}
-         })
-         }    
-     })
+      res.cookie('userEmail', req.body.email, {maxAge: (1000*60)*60})
+    }else{
+      res.clearCookie('userEmail');
+    }
+    res.redirect('/');
+    } else {
+    res.render('login', {
+    errors: {
+    email: {
+    msg: 'El correo electrónico o constraseña son inválidas'}
+    },
+    oldData: req.body})}
+    }    
+
   },
   edit: (req, res) => {
     db.Book.findByPk(req.params.id,{include:'authors'})

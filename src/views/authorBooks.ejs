@@ -17,7 +17,7 @@
         <div class="feature col">
           <div class="feature-icon bg-gradient">
             <% for(let i=0; i<books.length;i++) {%> 
-            <img class="d-block mx-auto mb-4" src=<%=books[i].cover%>  alt="" width="172" height="257">
+            <img class="d-block mx-auto mb-4" style="object-fit: scale-down;" src=<%=books[i].cover%>  alt="" width="172" height="257">
           </div>
           <h2><%= books[i].title %> </h2>
           <p><%= books[i].description %> </p>
