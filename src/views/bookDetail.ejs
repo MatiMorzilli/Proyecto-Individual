@@ -23,9 +23,11 @@
           <p class="lead mb-4 fw-bold">Release Date:</p>
           <p class="lead mb-4"><%=books.description%></p>
           <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-            <a class="btn btn-primary btn-lg px-4 gap-3" href="/books/edit/<%=books.id %>">Edit</a>
-            <form action="/books/<%=books.id%>?_method=DELETE" method="post" >
-            <button type="submit" class="btn btn-outline-secondary btn-lg px-4">Delete</button>
+            <% if(locals.isLogged && locals.logedUser.CategoryId == 1){ %> 
+              <a class="btn btn-primary btn-lg px-4 gap-3" href="/books/edit/<%=books.id %>">Edit</a>
+              <form action="/books/<%=books.id%>?_method=DELETE" method="post" >
+                <button type="submit" class="btn btn-outline-secondary btn-lg px-4">Delete</button>
+                <% }; %>
           </form>
           </div>
         </div>

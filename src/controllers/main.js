@@ -10,7 +10,7 @@ const mainController = {
       .then((books) => {
         res.render('home', { books:books });
       })
-      .catch((error) => res.send(error));
+      .catch((error) => console.log(error));
   },
   bookDetail: (req, res) => {
     db.Book.findByPk(req.params.id,{
@@ -42,21 +42,22 @@ const mainController = {
     db.Book.destroy({where: {id:IdBook}})
     .then(()=>{
       return res.redirect('/')})
-    .catch(error=> res.send(error))
+    .catch(error=> console.log(error))
   },
   authors: (req, res) => {
     db.Author.findAll()
       .then((authors) => {
         res.render('authors', {authors});
       })
-      .catch((error) => res.send(error));
+      .catch((error) => console.log(error));
   },
   authorBooks: (req, res) => {
     db.Author.findByPk(req.params.id,
       {include:'books'})
       .then(authors=>{
         const books = authors.books
-        res.render('authorBooks',{authors,books})
+        console.log(authors)
+        res.render('authorBooks',{books})
       })
   },
   register: (req, res) => {
@@ -84,6 +85,7 @@ const mainController = {
           })
   }else{
     const passwordHashed = bcrypt.hashSync(req.body.password,10)
+    if(validation.errors.length <= 0){
     db.User.create({
       Name: req.body.name,
       Email:req.body.email,
@@ -95,11 +97,11 @@ const mainController = {
       .then(() => {
         res.redirect('/users/login');
       })
-      .catch((error) => res.send(error));
-  }})},
+      .catch((error) => console.log(error));
+  }}})},
   logout: (req,res)=>{
   res.clearCookie('userEmail');
-  res.session.destroy();
+  req.session.destroy();
   return res.redirect('/')
   },
   login: (req, res) => {
@@ -129,6 +131,8 @@ const mainController = {
     .then((checked)=>{
     if(checked){
      delete userInDB.Pass;
+     req.session.emailsession = userInDB.Email
+     console.log(req.session.emailsession)
        req.session.logedUser = userInDB;
        if(req.body.recordame){
       res.cookie('userEmail', req.body.email, {maxAge: (1000*60)*60})}
@@ -162,7 +166,7 @@ const mainController = {
     .then(()=>{
      return res.redirect('/')
     })
-    .catch(error=>res.send(error))
+    .catch(error=>console.log(error))
   }
 };
 

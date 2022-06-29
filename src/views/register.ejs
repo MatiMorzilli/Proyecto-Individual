@@ -30,7 +30,7 @@
                 </div>
                 <div class="col-md-9 pe-5">
   
-                  <input type="text" name="name" class="form-control form-control-lg" />
+                  <input type="text" name="name" class="form-control form-control-lg" value="<%= locals.oldData && oldData.name? oldData.name :null%>" />
                   <% if (locals.errors && errors.name) { %>
                     <p style="color: #D84D09;"><%= errors.name.msg %> </p> 
                  <% } %>
@@ -47,7 +47,7 @@
                 </div>
                 <div class="col-md-9 pe-5">
   
-                  <input type="email" name="email" class="form-control form-control-lg" placeholder="example@gmail.com" />
+                  <input type="email" name="email" class="form-control form-control-lg" placeholder="example@gmail.com" value="<%= locals.oldData && oldData.email? oldData.email :null%>"/>
                   <% if (locals.errors && errors.email) { %>
                     <p style="color: #D84D09;"><%= errors.email.msg %> </p> 
                  <% } %>
@@ -64,7 +64,7 @@
                 </div>
                 <div class="col-md-9 pe-5">
   
-                  <input type="text" name="country" class="form-control form-control-lg" placeholder="Argentina" />
+                  <input type="text" name="country" class="form-control form-control-lg" placeholder="Argentina" value="<%= locals.oldData && oldData.country? oldData.country :null%>" />
                   <% if (locals.errors && errors.country) { %>
                     <p style="color: #D84D09;"><%= errors.country.msg %> </p> 
                  <% } %>

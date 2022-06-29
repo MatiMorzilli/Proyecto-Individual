@@ -3,17 +3,16 @@ const path = require('path');
 
 const usersMiddleware = [
 body('name')
-                .notEmpty().withMessage('* Ingrese su nombre y apellido completo').bail()
-                .isLength({min: 2}).withMessage('* Ingreso al menos 2 caracteres'),
+                .notEmpty().withMessage('* Enter your full name and surname').bail()
+                .isLength({min: 4}).withMessage('* Enter at least 2 characters'),
 body('country')
-                .notEmpty().withMessage('* Ingrese su país de nacimiento'),
+                .notEmpty().withMessage('* Enter your country of birth'),
 body('email')
-                .notEmpty().withMessage('* Ingrese su correo electrónico').bail()
-                .isEmail().withMessage('* Ingrese un correo electrónico válido'),
+                .notEmpty().withMessage('* Enter your email').bail()
+                .isEmail().withMessage('* Enter a valid email address'),
 body('password')
-                .notEmpty().withMessage('* Defina una contraseña').bail()
-                .isLength({min: 8}).withMessage('* Su contraseña debe tener al menos 8 caracteres').bail()
-                .isStrongPassword().withMessage('* Defina una contraseña fuerte')
+                .notEmpty().withMessage('* Set a password').bail()
+                .isLength({min: 8}).withMessage('* Your password must be at least 8 characters').bail()
 ]
 
 module.exports = usersMiddleware;
