@@ -25,13 +25,14 @@ const mainController = {
   },
   bookSearchResult: (req, res) => {
     let title = req.body.title;
-        db.Book.findOne({
+        db.Book.findAll({
             where: {
                 title: {[Op.like]: `%${title}%`}
             }
         }).then(books => {
+          console.log(books)
             if (books){
-                res.redirect(`/books/detail/${books.id}`)
+                res.render('search',{books})
             }else{
               res.render('search',{notFound: true})
             }
